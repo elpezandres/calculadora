@@ -35,8 +35,15 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install buildozer cython==0.29.36
 
+      
+      - name: Create pip constraints
+        run: echo "pip==25.3" > "$GITHUB_WORKSPACE/pip-constraints.txt"
+
       - name: Build debug APK
+        env:
+          PIP_CONSTRAINT: ${{ github.workspace }}/pip-constraints.txt
         run: buildozer -v android debug
+
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
